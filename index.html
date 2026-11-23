@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="면접에서 「올해 무슨 일 했어요?」에 숫자로 답하기 — 경험정리 구글폼 12/11(금)까지">
+<meta property="og:title" content="공(?)팀 경험치 10배 이벤트">
+<meta property="og:description" content="면접에서 「올해 무슨 일 했어요?」에 숫자로 답하기 — 경험정리 구글폼 12/11(금)까지">
+<meta property="og:type" content="website">
+<title>경험치 10배 이벤트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;900&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  /* 세로 한 줄 흐름 — 쪽마다 큰 글 하나, 강조색은 커서 · 선택 · 핵심 숫자에만, 상자 대신 선과 여백 (공지 영상과 같은 글 · 같은 꼴) */
+  :root {
+    --ground: #0e0f0c;
+    --ink: #f2f1ea;
+    --dim: #8b8b80;
+    --rule: #2c2d28;
+    --lime: #c8f03c;
+    --bubble: #17180f;
+    --f-body: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+    color-scheme: dark;
+  }
+  html { scroll-snap-type: y proximity; }
+  body { background: var(--ground); color: var(--ink); font-family: var(--f-body); word-break: keep-all; overflow-wrap: break-word; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 560px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+  section { min-height: 92svh; padding-block: 56px 48px; display: flex; flex-direction: column; justify-content: center; gap: 28px; border-bottom: 1px solid var(--rule); scroll-snap-align: start; }
+  section:last-child { border-bottom: 0; }
+  .mono { font-family: var(--f-mono); font-size: 0.8rem; letter-spacing: 0.03em; color: var(--dim); }
+  .pg { display: flex; justify-content: space-between; gap: 12px; }
+  .big { font-size: clamp(2.4rem, 11vw, 3.6rem); font-weight: 900; line-height: 1.12; letter-spacing: -0.03em; text-wrap: balance; margin: 0; }
+  .mid { font-size: clamp(1.5rem, 6.4vw, 2rem); font-weight: 900; line-height: 1.25; letter-spacing: -0.02em; text-wrap: balance; margin: 0; }
+  .txt { font-size: 1.15rem; line-height: 1.6; font-weight: 500; margin: 0; }
+  .dim { color: var(--dim); }
+  b, .lime { color: var(--lime); font-weight: 900; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 0; width: 100%; }
+  .answer { font-size: 1.55rem; font-weight: 700; line-height: 1.4; }
+  .cur { display: inline-block; width: 0.42em; height: 1.05em; background: var(--lime); vertical-align: -0.15em; margin-left: 4px; animation: blink 0.9s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .quote { border-top: 1px solid var(--rule); padding-top: 18px; display: grid; gap: 10px; }
+  .quote p { margin: 0; font-size: 1.35rem; font-weight: 700; line-height: 1.45; }
+  .quote a { color: var(--dim); font-family: var(--f-mono); font-size: 0.78rem; text-decoration: underline; text-underline-offset: 3px; }
+  .quote a:hover, .quote a:focus-visible { color: var(--ink); }
+  .stats { display: grid; gap: 0; }
+  .stat { display: grid; grid-template-columns: minmax(0, 9.5rem) 1fr; align-items: baseline; gap: 12px; border-top: 1px solid var(--rule); padding-block: 14px; }
+  .stat .v { font-size: 2.2rem; font-weight: 900; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+  .bubbles { display: grid; gap: 22px; }
+  .bub { position: relative; background: var(--bubble); border: 1.5px solid #3a3b35; border-radius: 22px; padding: 16px 20px 18px; display: grid; gap: 6px; min-width: 0; }
+  .bub::after { content: ""; position: absolute; left: 30px; bottom: -10px; width: 18px; height: 18px; background: var(--bubble); border-right: 1.5px solid #3a3b35; border-bottom: 1.5px solid #3a3b35; transform: rotate(45deg); }
+  .bub.done { border-color: var(--lime); }
+  .bub.done::after { border-color: var(--lime); }
+  .bub .old { font-size: 1rem; color: var(--dim); text-decoration: line-through; text-decoration-color: var(--lime); text-decoration-thickness: 2px; }
+  .bub .new { font-size: 1.12rem; font-weight: 700; line-height: 1.5; min-height: 1.5em; }
+  button.replay { justify-self: start; font: 500 0.95rem var(--f-body); color: var(--ground); background: var(--lime); border: 0; border-radius: 999px; padding: 10px 18px; cursor: pointer; }
+  button.replay:focus-visible, a.cta:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chip { border: 1.5px solid var(--lime); color: var(--lime); border-radius: 999px; padding: 6px 14px; font-weight: 900; font-size: 1.05rem; }
+  .dots { display: grid; grid-template-columns: repeat(9, 1fr); gap: 8px; max-width: 360px; }
+  .dot { aspect-ratio: 1; border-radius: 50%; border: 2px solid #3a3b35; max-width: 100%; }
+  .dot.on { background: var(--lime); border-color: var(--lime); }
+  .dot.me { background: var(--lime); border-color: var(--lime); box-shadow: 0 0 0 3px var(--ground), 0 0 0 5px var(--lime); }
+  .stamp { font-size: clamp(2.8rem, 13vw, 4.2rem); font-weight: 900; letter-spacing: -0.045em; color: var(--lime); line-height: 1; }
+  .todo { display: grid; gap: 0; }
+  .todo .row { border-top: 1px solid var(--rule); padding-block: 16px; display: grid; gap: 4px; }
+  .todo .d { font-size: 2rem; font-weight: 900; color: var(--lime); letter-spacing: -0.03em; }
+  .todo .w { font-size: 1.25rem; font-weight: 700; }
+  a.cta { display: inline-block; justify-self: start; text-decoration: none; background: var(--lime); color: var(--ground); font-weight: 900; font-size: 1.15rem; border-radius: 14px; padding: 16px 22px; }
+  .jobs { display: grid; }
+  .jobs .r { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 12px; align-items: baseline; border-top: 1px solid var(--rule); padding-block: 11px; }
+  .jobs .n { font-weight: 900; font-size: 1.08rem; }
+  .jobs .n small { font-family: var(--f-mono); font-weight: 400; font-size: 0.78rem; color: var(--dim); margin-left: 6px; }
+  .jobs .w { color: var(--lime); font-weight: 900; font-size: 1.02rem; }
+  .ten { font-size: clamp(3rem, 15vw, 4.8rem); font-weight: 900; letter-spacing: -0.045em; line-height: 1; }
+  .ten .z { color: var(--lime); }
+  @media (prefers-reduced-motion: reduce) { .cur { animation: none; } }
+</style>
+
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0}</style>
+</head>
+<body>
+<main class="wrap">
+  <section id="p1" aria-label="물음">
+    <div class="pg mono"><span>2026 공(?)팀 · 경험치 10배 이벤트</span><span>1 / 6</span></div>
+    <p class="mid">면접자 <b>3259</b>번 김공순입니다!</p>
+    <div class="mono">면접관</div>
+    <h1 class="big">올해 무슨 일<br>했어요?</h1>
+    <hr>
+    <div class="mono">김공순</div>
+    <p class="answer">교육 운영을 지원했습니다.<span class="cur" aria-hidden="true"></span></p>
+    <p class="txt dim">…그다음 말이 안 나온다면.</p>
+  </section>
+
+  <section id="p2" aria-label="경력 있는 신입">
+    <div class="pg mono"><span>왜 지금</span><span>2 / 6</span></div>
+    <div class="quote">
+      <p>「요즘 신입 안 뽑죠? 경력 뽑습니다. 또는 <b>경력 있는 신입</b> 뽑죠.」</p>
+      <a href="https://youtu.be/yagCF3JqwAE?t=1278" target="_blank" rel="noopener">슈카월드 · 「수많은 취준생을 울린 '꿈꾸던 어른이 되었나요?'」 2026.11.14 · 21:18</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="mono">대기업 신입 비중</span><span class="v">47% → <span class="lime">40%↓</span></span></div>
+      <div class="stat"><span class="mono">대기업 경력 채용</span><span class="v"><span class="lime">60%↑</span></span></div>
+    </div>
+    <h2 class="mid">그 경력, 여러분은 올해 이미 쌓았습니다.<br><span class="dim">다만 아직 적어 두지 않았을 뿐.</span></h2>
+  </section>
+
+  <section id="p3j" aria-label="공고가 찾는 역량">
+    <div class="pg mono"><span>공고가 찾는 역량</span><span>3 / 6</span></div>
+    <div class="quote">
+      <p>「신입 공고 열어보면 이 문구 꼭 있죠. <b>관련 경험자 우대.</b> 신입인데 경험을 대체 어디서 쌓으라는 걸까요?」</p>
+      <a href="https://youtu.be/9ji1Q3XnHng?t=2" target="_blank" rel="noopener">면접왕 이형 · 「신입도 경력이 필요한 시대, 돈 받으며 직무 경험 만드는 법」 2026.11.15 · 0:02</a>
+    </div>
+    <p class="mono">신입 · 인턴 채용공고 38건(2025.11 ~ 2026.11) · 그 역량을 요구한 공고 수 → 우리 사업에서 이미 한 일</p>
+    <div class="jobs">
+      <div class="r"><span class="n">소통 · 조율<small>18</small></span><span class="w">제안 · PT · 교육 당일</span></div>
+      <div class="r"><span class="n">데이터 분석<small>17</small></span><span class="w">만족도 · 성과 분석</span></div>
+      <div class="r"><span class="n">일정 · 행정 · 정산<small>17</small></span><span class="w">착수 · 교육 안내 · 정산</span></div>
+      <div class="r"><span class="n">리서치 · 트렌드<small>17</small></span><span class="w">요구 분석 · 과정 설계</span></div>
+      <div class="r"><span class="n">문서 · 보고서<small>12</small></span><span class="w">제안서 · 안내문 · 결과보고서</span></div>
+      <div class="r"><span class="n">문제 정의 · 개선<small>11</small></span><span class="w">당일 돌발 대응 · 개선안</span></div>
+      <div class="r"><span class="n">디지털 · AI 도구<small>11</small></span><span class="w">AI로 줄여 본 내 일</span></div>
+      <div class="r"><span class="n">AX 서비스 기획<small>8</small></span><span class="w">AI로 바꾼 일하는 방식</span></div>
+    </div>
+    <h2 class="mid">공고가 찾는 이름, 올해 <b>우리 사업</b>에 다 있었습니다.</h2>
+  </section>
+
+  <section id="p3" aria-label="얼마나">
+    <div class="pg mono"><span>이력서 한 줄</span><span>4 / 6</span></div>
+    <h2 class="mid">「~했다」마다 물어봅니다. <b>얼마나?</b></h2>
+    <div class="bubbles" id="bubbles">
+      <div class="bub done"><span class="mono">국토교통인재개발원 · 리더십 과정</span><span class="old">교육 운영을 지원했습니다.</span><span class="new" data-t="4개 과정 11회, 330명의 리더십 과정을 설계하고 운영했습니다.">4개 과정 11회, 330명의 리더십 과정을 설계하고 운영했습니다.</span></div>
+      <div class="bub done"><span class="mono">K-콘텐츠 수출 마케터 양성</span><span class="old">교육 운영을 지원했습니다.</span><span class="new" data-t="교육생 110명의 출결 · 과제 · 동료평가를 성적표 한 장으로 묶었습니다.">교육생 110명의 출결 · 과제 · 동료평가를 성적표 한 장으로 묶었습니다.</span></div>
+      <div class="bub done"><span class="mono">국토교통인재개발원 · 핵심가치 과정</span><span class="old">교육 운영을 지원했습니다.</span><span class="new" data-t="핵심가치 과정 6개를 새로 설계했습니다. 과정마다 30명, 5일 35시간.">핵심가치 과정 6개를 새로 설계했습니다. 과정마다 30명, 5일 35시간.</span></div>
+      <div class="bub done"><span class="mono">국가인재원 · AI 교육체계 연구</span><span class="old">연구 보조를 했습니다.</span><span class="new" data-t="5명 연구팀에서 인터뷰를 정리해 결과보고서까지 냈습니다.">5명 연구팀에서 인터뷰를 정리해 결과보고서까지 냈습니다.</span></div>
+    </div>
+    <button class="replay" id="replay" type="button">숫자 붙이는 장면 다시 보기</button>
+    <p class="mono">지난해 선배들이 경험정리 워크시트에 적은 숫자 그대로 · 이름은 싣지 않음</p>
+  </section>
+
+  <section id="p4" aria-label="필살기">
+    <div class="pg mono"><span>필살기</span><span>5 / 6</span></div>
+    <h2 class="big" style="font-size:clamp(2rem,9vw,3rem)">경험 한 건을<br><b>필살기</b> 하나로.</h2>
+    <div class="chips"><span class="chip">상황</span><span class="chip">과제</span><span class="chip">행동</span><span class="chip">결과</span><span class="chip" style="background:var(--lime);color:var(--ground)">숫자</span></div>
+    <div class="quote">
+      <p>「상황, 과제, 행동, 결과 그리고 숫자. 이거 제가 늘 말하던 <b>필살기</b>예요.」</p>
+      <a href="https://youtu.be/9ji1Q3XnHng?t=359" target="_blank" rel="noopener">면접왕 이형 · 「신입도 경력이 필요한 시대, 돈 받으며 직무 경험 만드는 법」 2026.11.15 · 5:59</a>
+    </div>
+    <div class="quote">
+      <p>「경험 리스트업. 이게 제일 중요해. 경험을 쭉, <b>일단 적어야 돼.</b> 이 중에서 얘가 필살기구나, 골라야 돼.」</p>
+      <a href="https://youtu.be/HPedqEhdj8Y?t=17" target="_blank" rel="noopener">면접왕 이형 · 「AI로 자소서 딸깍하기 전에 점검해야 하는 3가지」 2026.9.10 · 0:17</a>
+    </div>
+    <div class="quote">
+      <p>「다른 사람을 위해서? 아니에요. <b>나를 위해서</b> 만든 거야.」</p>
+      <a href="https://youtu.be/LdmVkrFlkb8?t=100" target="_blank" rel="noopener">퇴사한 이형 · 「핵심인재로 성장하는 방법」 2026.10.18 · 1:40</a>
+    </div>
+  </section>
+
+  <section id="p5" aria-label="할 일">
+    <div class="pg mono"><span>할 일</span><span>6 / 6</span></div>
+    <h2 class="mid">할 일은 둘.</h2>
+    <div class="todo">
+      <div class="row"><span class="d">12/11(금)까지</span><span class="w">경험정리 구글폼 15문항</span><span class="mono">맡았던 사업 한 건 · 여러 건이면 여러 번</span></div>
+      <div class="row"><span class="d">워크숍 당일</span><span class="w">3분 발표자료</span><span class="mono">그 한 건을 3분으로 들고 옵니다</span></div>
+    </div>
+    <a class="cta" href="https://docs.google.com/forms/d/e/1FAIpQLSecT4txnHmn25jPhvo7hl2TH3L4wEsaL_Z8stvwjBBaN4wvHQ/viewform" target="_blank" rel="noopener">경험정리 구글폼 열기</a>
+    <hr>
+    <p class="mono">「올해 무슨 일 했어요?」</p>
+    <p class="answer">제가 맡은 사업 한 건, 숫자로 말씀드리겠습니다.<span class="cur" aria-hidden="true"></span></p>
+    <hr>
+    <p class="txt">우리 팀 <b>12명</b>, 올해 사업 <b>27건</b>. 한 사람 두세 건씩, 모두 다른 경험.</p>
+    <div class="dots" id="dots" aria-hidden="true"></div>
+    <div class="ten">경험치 1<span class="z">0</span>배</div>
+    <p class="txt">한 건씩 적어 모으면, <b>26건</b>을 받아 갑니다.</p>
+  </section>
+</main>
+
+<script>
+  (function () {
+    const dots = document.getElementById("dots");
+    const colors = ["#c8f03c", "#ff6b5b", "#ffb547", "#ffe066", "#6ee7b7", "#3ddbd9", "#5aa9ff", "#8b7bff", "#d38cff", "#ff7ab6", "#f2f1ea", "#ff9f6b"];
+    const per = [3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2];
+    per.forEach((n, m) => {
+      for (let j = 0; j < n; j++) {
+        const d = document.createElement("span");
+        d.className = "dot";
+        d.style.background = colors[m];
+        d.style.borderColor = colors[m];
+        dots.appendChild(d);
+      }
+    });
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let running = false;
+    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+    async function replay() {
+      if (running) return;
+      running = true;
+      const bubs = [...document.querySelectorAll("#bubbles .bub")];
+      bubs.forEach((b) => { b.classList.remove("done"); b.querySelector(".new").textContent = ""; b.querySelector(".old").style.textDecoration = "none"; b.querySelector(".old").style.color = "var(--ink)"; });
+      for (const b of bubs) {
+        const old = b.querySelector(".old"), nw = b.querySelector(".new"), t = nw.dataset.t;
+        old.style.background = "var(--lime)"; old.style.color = "var(--ground)";
+        await sleep(reduce ? 0 : 380);
+        old.style.background = "transparent"; old.style.color = ""; old.style.textDecoration = "";
+        if (reduce) { nw.textContent = t; }
+        else { for (let i = 1; i <= t.length; i++) { nw.textContent = t.slice(0, i); await sleep(32); } }
+        b.classList.add("done");
+        await sleep(reduce ? 0 : 250);
+      }
+      running = false;
+    }
+    document.getElementById("replay").addEventListener("click", replay);
+  })();
+</script>
+
+</body>
+</html>
